@@ -2,8 +2,12 @@
 
 @section('content')
 <div class="container">
-    <h2>Buat Order Baru</h2>
-    
+    <div class="mt-3 mb-3">
+        <h2>Buat Order Baru</h2>
+    </div >
+    <div class="alert alert-secondary" role="alert">
+        Setiap order hanya bisa memesan satu menu saja jika ingin menambah menu buat order baru!
+    </div>
     <div class="mb-3">
         <input type="text" id="searchMenu" class="form-control" placeholder="Cari nama makanan..." onkeyup="searchMenu()">
     </div>
