@@ -16,7 +16,7 @@
         <hr>
         <p class="text-center">Terima kasih telah bertransaksi!</p>
         <div class="d-flex justify-content-between">
-            <a href="{{ route('orders.index') }}" class="btn btn-secondary">Kembali</a>
+            <a href="{{ route('invoices.index') }}" class="btn btn-secondary">Kembali</a>
             <a href="{{ route('invoices.export', $order->id) }}" class="btn btn-primary">Unduh PDF</a>
         </div>
     </div>

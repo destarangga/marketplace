@@ -21,6 +21,17 @@
 .sidebar.open{
   width: 250px;
 }
+.container {
+  transition: all 0.5s ease;
+  margin-left: 78px; /* Awal dengan margin kiri kecil */
+  padding: 20px;
+  width: calc(100% - 78px); /* Awal dengan width yang menyesuaikan */
+}
+
+.sidebar.open ~ .container {
+  margin-left: 250px; /* Ketika sidebar terbuka, margin kiri berubah */
+  width: calc(100% - 250px); /* Ketika sidebar terbuka, lebar konten berubah */
+}
 .sidebar .logo-details{
   height: 60px;
   display: flex;

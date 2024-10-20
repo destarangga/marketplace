@@ -11,9 +11,14 @@ class InvoiceController extends Controller
 {
     public function index()
     {
-        $invoices = Invoice::with('order.customer')->get(); 
+        $invoices = Invoice::with('order.customer')
+            ->orderBy('created_at', 'desc')
+            ->distinct('order_id')
+            ->get();
+            
         return view('invoices.index', compact('invoices'));
     }
+
     public function generate(Order $order)
     {
         if (!$order->menu) {

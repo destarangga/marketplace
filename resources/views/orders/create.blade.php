@@ -27,25 +27,38 @@
         @endforeach
     </div>
 
-    <div id="orderForm" style="display:none; margin-top: 20px;">
-        <h4>Detail Order</h4>
-        <div id="selectedMenuDetails" style="margin-bottom: 15px; font-weight: bold;"></div>
-        <form method="POST" action="{{ route('orders.store') }}">
-            @csrf
-            <input type="hidden" id="selected_menu_id" name="menu_id" required>
-            <div class="form-group">
-                <label for="quantity">Jumlah</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
-            </div>
-            <div class="form-group">
-                <label for="delivery_date">Tanggal Pengiriman</label>
-                <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
-            </div>
-            <button type="submit" class="btn btn-success">Simpan Order</button>
-        </form>
-    </div>
-</div>
+    <div class="modal" id="orderForm" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog d-flex justify-content-center">
+            <div class="modal-content w-75">
+                <div class="modal-body p-4">
+                    <div id="selectedMenuDetails" style="margin-bottom: 15px; font-weight: bold;"></div>
+                    <form method="POST" action="{{ route('orders.store') }}">
+                        @csrf
+                        <input type="hidden" id="selected_menu_id" name="menu_id" required>
+                        <!-- Email input -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
+                            <label for="quantity">Jumlah</label>
+                        </div>
+    
+                        <!-- password input -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
+                            <label for="delivery_date">Tanggal Pengiriman</label>
+                        </div>
+    
+                        <!-- Submit button -->
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-2">Simpan Order</button>
+                        <a href="{{ route('orders.create') }}">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger btn-block">Batal Order</button>
+                        </a>
 
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
     function searchMenu() {
         const input = document.getElementById('searchMenu');
@@ -67,6 +80,8 @@
         document.getElementById('selectedMenuDetails').innerText = `Menu yang dipilih: ${menuName} - Rp${menuPrice.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; // Menampilkan nama menu
         document.getElementById('quantity').value = 1; 
         document.getElementById('orderForm').style.display = 'block';
+
+        $('#orderForm').modal('show'); 
     }
 </script>
 @endsection
