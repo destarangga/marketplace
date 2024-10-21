@@ -8,7 +8,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('menus.update', $menu) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('menus.update', $menu) }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
         @csrf
         @method('PUT')
 
@@ -30,7 +30,7 @@
 
         <div class="form-group">
             <label for="price">Harga</label>
-            <input type="number" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $menu->price) }}" required>
+            <input type="number" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $menu->price) }}" required min="0" max="1000000000000">
             @error('price')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

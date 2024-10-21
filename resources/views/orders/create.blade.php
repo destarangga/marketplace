@@ -6,7 +6,7 @@
         <h2>Buat Order Baru</h2>
     </div >
     <div class="alert alert-secondary" role="alert">
-        Setiap order hanya bisa memesan satu menu saja jika ingin menambah menu buat order baru!
+        Setiap order hanya bisa memesan satu menu saja jika ingin menambah menu Buat Pesanan!
     </div>
     <div class="mb-3">
         <input type="text" id="searchMenu" class="form-control" placeholder="Cari nama makanan..." onkeyup="searchMenu()">
@@ -37,14 +37,14 @@
                         <input type="hidden" id="selected_menu_id" name="menu_id" required>
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
                             <label for="quantity">Jumlah</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
                         </div>
     
                         <!-- password input -->
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
                             <label for="delivery_date">Tanggal Pengiriman</label>
+                            <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
                         </div>
     
                         <!-- Submit button -->

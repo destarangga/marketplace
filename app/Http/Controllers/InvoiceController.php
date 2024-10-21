@@ -9,18 +9,53 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::with('order.customer')
-            ->orderBy('created_at', 'desc')
-            ->distinct('order_id')
-            ->get();
-            
-        return view('invoices.index', compact('invoices'));
+        $user = auth()->user(); // Ambil pengguna yang sedang login
+
+        // Ambil query pencarian
+        $search = $request->input('search');
+        $sortBy = $request->input('sort_by', 'created_at'); 
+        $sortOrder = $request->input('sort_order', 'desc'); 
+
+        if ($user->role === 'customer') {
+            $invoices = Invoice::with('order.customer')
+                ->whereHas('order', function ($query) use ($user) {
+                    $query->where('customer_id', $user->id);
+                })
+                ->when($search, function ($query, $search) {
+                    $query->whereHas('order.customer', function ($q) use ($search) {
+                        $q->where('company_name', 'like', "%{$search}%"); 
+                    })->orWhere('order_id', 'like', "%{$search}%"); 
+                })
+                ->orderBy($sortBy, $sortOrder)
+                ->distinct('order_id')
+                ->get();
+        }else {
+            $invoices = Invoice::with('order.customer')
+                ->when($search, function ($query, $search) {
+                    return $query->whereHas('order.customer', function ($q) use ($search) {
+                        $q->where('company_name', 'like', "%{$search}%");
+                    })->orWhere('order_id', 'like', "%{$search}%"); 
+                })
+                ->orderBy($sortBy, $sortOrder)
+                ->distinct('order_id')
+                ->get();
+        }
+
+        return view('invoices.index', compact('invoices', 'search', 'sortBy', 'sortOrder'));
     }
+
+
 
     public function generate(Order $order)
     {
+        $invoice = Invoice::where('order_id', $order->id)->first();
+
+        if ($invoice) {
+            return view('invoices.show', compact('invoice', 'order')); 
+        }
+
         if (!$order->menu) {
             return redirect()->back()->with('error', 'Menu tidak ditemukan untuk order ini.');
         }
@@ -35,6 +70,7 @@ class InvoiceController extends Controller
 
         return view('invoices.show', compact('invoice', 'order')); 
     }
+
 
     public function exportPdf(Order $order)
     {

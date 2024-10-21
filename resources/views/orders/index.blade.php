@@ -4,7 +4,7 @@
 <div class="container">
     <div class="d-flex justify-content-between mt-3 mb-3">
     <h2>Daftar Order</h2>
-    <a href="{{ route('orders.create') }}" class="btn btn-primary">Buat Order Baru</a>
+    <a href="{{ route('orders.create') }}" class="btn btn-primary">Buat Pesanan</a>
     </div>
     
     @if(session('success'))

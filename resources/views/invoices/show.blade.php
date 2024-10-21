@@ -22,21 +22,5 @@
     </div>
 </div>
 
-<style>
-    .receipt {
-        max-width: 300px; /* Lebar maksimum struk */
-        margin: 0 auto; /* Centering */
-        padding: 20px;
-        border: 1px solid #ccc; /* Border untuk struk */
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Bayangan untuk efek */
-        font-family: 'Courier New', Courier, monospace; /* Font seperti struk */
-    }
-    .receipt h2 {
-        margin-bottom: 20px;
-    }
-    .receipt p {
-        margin: 5px 0; /* Spasi antar paragraf */
-    }
-</style>
+<
 @endsection

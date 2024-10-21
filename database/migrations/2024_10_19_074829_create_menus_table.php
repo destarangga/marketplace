@@ -16,7 +16,7 @@ class CreateMenusTable extends Migration
             $table->foreignId('merchant_id')->constrained('users')->onDelete('cascade'); 
             $table->string('name');
             $table->text('description');
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 13, 2);
             $table->string('image_path')->nullable();
             $table->timestamps();
         });
