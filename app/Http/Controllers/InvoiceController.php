@@ -19,7 +19,9 @@ class InvoiceController extends Controller
         $sortOrder = $request->input('sort_order', 'desc'); 
 
         if ($user->role === 'customer') {
-            $invoices = Invoice::with('order.customer')
+            $invoices = Invoice::with(['order.customer', 'order.menu' => function ($query) {
+                $query->withTrashed(); // Ambil menu termasuk yang dihapus
+            }])
                 ->whereHas('order', function ($query) use ($user) {
                     $query->where('customer_id', $user->id);
                 })
@@ -31,8 +33,10 @@ class InvoiceController extends Controller
                 ->orderBy($sortBy, $sortOrder)
                 ->distinct('order_id')
                 ->get();
-        }else {
-            $invoices = Invoice::with('order.customer')
+        } else {
+            $invoices = Invoice::with(['order.customer', 'order.menu' => function ($query) {
+                $query->withTrashed(); // Ambil menu termasuk yang dihapus
+            }])
                 ->when($search, function ($query, $search) {
                     return $query->whereHas('order.customer', function ($q) use ($search) {
                         $q->where('company_name', 'like', "%{$search}%");
@@ -46,21 +50,22 @@ class InvoiceController extends Controller
         return view('invoices.index', compact('invoices', 'search', 'sortBy', 'sortOrder'));
     }
 
-
-
     public function generate(Order $order)
     {
         $invoice = Invoice::where('order_id', $order->id)->first();
 
+        $menu = $order->menu()->withTrashed()->first();
+
         if ($invoice) {
-            return view('invoices.show', compact('invoice', 'order')); 
+
+            return view('invoices.show', compact('invoice', 'order', 'menu')); 
         }
 
-        if (!$order->menu) {
+        if (!$menu) {
             return redirect()->back()->with('error', 'Menu tidak ditemukan untuk order ini.');
         }
 
-        $total = $order->menu->price * $order->quantity;
+        $total = $menu->price * $order->quantity;
 
         $invoice = Invoice::create([
             'order_id' => $order->id,
@@ -68,8 +73,10 @@ class InvoiceController extends Controller
             'status' => 'Paid', 
         ]);
 
-        return view('invoices.show', compact('invoice', 'order')); 
+        return view('invoices.show', compact('invoice', 'order', 'menu')); // Sertakan menu
     }
+
+
 
 
     public function exportPdf(Order $order)

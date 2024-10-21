@@ -12,6 +12,13 @@
     @endif
 
     <div class="row">
+        @if($menus->isEmpty())
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    Tidak ada menu tersedia. Silakan tambahkan menu baru.
+                </div>
+            </div>
+        @else
         @foreach($menus as $menu)
         <div class="col-md-4 mb-4">
             <div class="card">
@@ -45,6 +52,7 @@
             </div>
         </div>
         @endforeach
+        @endif
     </div>
 </div>
 <script>

@@ -27,15 +27,6 @@
                     </a>
                     <span class="tooltip">Home</span>
                 </li>
-                @if (auth()->check() && auth()->user()->role === 'customer')
-                <li>
-                    <a href="{{ route('orders.index') }}">
-                        <i class='bx bx-cart-alt'></i>
-                        <span class="links_name">Order</span>
-                    </a>
-                    <span class="tooltip">Order</span>
-                </li>
-                @endif
                 @if (auth()->check() && auth()->user()->role === 'merchant')
                 <li>
                     <a href="{{ route('menus.index') }}">
@@ -45,6 +36,13 @@
                     <span class="tooltip">Menu</span>
                 </li>
                 @endif
+                <li>
+                    <a href="{{ route('orders.index') }}">
+                        <i class='bx bx-cart-alt'></i>
+                        <span class="links_name">Order</span>
+                    </a>
+                    <span class="tooltip">Order</span>
+                </li>
                 <li>
                     <a href="{{ route('invoices.index') }}">
                         <i class='bx bx-food-menu'></i>

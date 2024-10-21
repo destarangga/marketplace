@@ -88,6 +88,12 @@ class AuthController extends Controller
             'user' => Auth::user(),
         ]);
     }
+    public function edit()
+    {
+        return view('profile.edit', [
+            'user' => Auth::user(),
+        ]);
+    }
 
     public function update(Request $request)
     {

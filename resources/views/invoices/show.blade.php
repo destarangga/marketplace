@@ -8,6 +8,7 @@
         
         <p><strong>Pesanan ID:</strong> {{ $order->id }}</p>
         <p><strong>Customer:</strong> {{ $order->customer->company_name }}</p>
+        <p><strong>Nama Menu:</strong> {{ $order->menu ? $order->menu->name : 'Menu tidak tersedia' }}</p>
         <p><strong>Total:</strong> Rp{{ number_format($invoice->total, 2, ',', '.') }}</p>
         <p><strong>Status:</strong> {{ $invoice->status }}</p>
         <p><strong>Tanggal Pengiriman:</strong> {{ $invoice->order->delivery_date->format('d-m-Y') }}</p>

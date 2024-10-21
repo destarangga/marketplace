@@ -11,9 +11,23 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('customer_id', Auth::id())->with('menu')->get();
+        $user = auth()->user();
+
+        if ($user->role === 'merchant') {
+            $orders = Order::with(['menu' => function($query) {
+                $query->withTrashed(); 
+            }])->get();
+        } else {
+            $orders = Order::where('customer_id', Auth::id())
+                ->with(['menu' => function($query) {
+                    $query->withTrashed(); 
+                }])->get();
+        }
+
         return view('orders.index', compact('orders'));
     }
+
+
 
     public function create()
     {

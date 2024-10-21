@@ -13,7 +13,7 @@
     @endif
 
     <table class="table" id="invoiceTable">
-        <thead>
+        <thead class="text-center">
             <tr>
                 <th>Pesanan ID</th>
                 <th>Customer</th>
@@ -21,10 +21,9 @@
                 <th>Status</th>
                 <th>Tanggal Pengiriman</th>
                 <th>Tanggal Invoice</th>
-                <th>Aksi</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
             @php
             $seenOrderIds = [];
             @endphp
@@ -35,11 +34,8 @@
                         <td>{{ $invoice->order->customer->company_name }}</td>
                         <td>Rp{{ number_format($invoice->total, 2, ',', '.') }}</td>
                         <td>{{ $invoice->status }}</td>
-                        <td>{{ $invoice->order->delivery_date->format('d-m-Y') }}</td>
-                        <td>{{ $invoice->created_at->format('d-m-Y') }}</td>
-                        <td>
-                            <a href="{{ route('orders.invoice', $invoice->order_id) }}">Lihat Invoice</a>
-                        </td>
+                        <td>{{ $invoice->order->delivery_date->format('F j, Y') }}</td>
+                        <td>{{ $invoice->created_at->format('F j, Y') }}</td>
                     </tr>
                     @php
                         $seenOrderIds[] = $invoice->order_id;

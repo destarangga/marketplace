@@ -10,7 +10,7 @@
             <p class="card-text">Role: {{ $user->role }}</p>
 
             @if ($user->role === 'merchant')
-                <p class="card-text">Anda memiliki akses sebagai merchant. Anda dapat mengelola menu dan melihat invoice</p>
+                <p class="card-text">Anda memiliki akses sebagai merchant. Anda dapat mengelola menu, order dan melihat invoice</p>
                 <a href="{{ route('menus.index') }}" class="btn btn-info">Siapkan Menu</a>
             @else
                 <p class="card-text">Anda adalah Customer. Silahkan untuk memesan minuman atau makanan yang di cari</p>
