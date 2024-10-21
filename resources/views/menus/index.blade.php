@@ -22,14 +22,23 @@
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $menu->name }}</h5>
-                    <p class="card-text">{{ $menu->description }}</p>
+                    <p class="description">{{ $menu->description }}</p>
+                    @if(strlen($menu->description) > 10) 
+                    <span class="more-link">Selengkapnya</span>
+                    @endif
                     <p class="card-text">Harga: Rp{{ number_format($menu->price, 2, ',', '.') }}</p>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('menus.edit', $menu) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('menus.edit', $menu) }}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
+        
+                        <!-- Ganti teks 'Hapus' dengan ikon tong sampah -->
                         <form action="{{ route('menus.destroy', $menu) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus menu ini?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -38,4 +47,23 @@
         @endforeach
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const descriptions = document.querySelectorAll('.description');
+
+    descriptions.forEach(function(description) {
+        const moreLink = description.nextElementSibling;
+
+        moreLink.addEventListener('click', function() {
+            if (description.classList.contains('expanded')) {
+                description.classList.remove('expanded');
+                moreLink.textContent = 'Selengkapnya';
+            } else {
+                description.classList.add('expanded');
+                moreLink.textContent = 'Sembunyikan';
+            }
+        });
+    });
+});
+</script>
 @endsection

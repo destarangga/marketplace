@@ -7,6 +7,29 @@
   font-family: "Poppins" , sans-serif;
 }
 
+.description {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 50px; /* Atur tinggi maksimal deskripsi */
+}
+
+.description.expanded {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  max-height: none;
+}
+
+.more-link {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 5px;
+}
+
 .receipt {
   max-width: 300px;
   margin: 0 auto;
