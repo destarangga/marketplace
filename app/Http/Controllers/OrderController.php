@@ -14,18 +14,24 @@ class OrderController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'merchant') {
-            $orders = Order::with(['menu' => function($query) {
-                $query->withTrashed(); 
+            // Mendapatkan semua menu yang dimiliki oleh merchant
+            $orders = Order::whereHas('menu', function($query) use ($user) {
+                $query->where('merchant_id', $user->id)
+                    ->withTrashed(); // Memungkinkan untuk melihat menu yang sudah soft deleted
+            })->with(['menu' => function($query) {
+                $query->withTrashed(); // Mengambil menu yang sudah dihapus (soft deleted)
             }])->get();
         } else {
+            // Untuk customer, hanya tampilkan order mereka sendiri
             $orders = Order::where('customer_id', Auth::id())
                 ->with(['menu' => function($query) {
-                    $query->withTrashed(); 
+                    $query->withTrashed(); // Memungkinkan untuk melihat menu yang sudah soft deleted
                 }])->get();
         }
 
         return view('orders.index', compact('orders'));
     }
+
 
 
 
