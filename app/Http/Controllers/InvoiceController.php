@@ -34,21 +34,26 @@ class InvoiceController extends Controller
                 ->distinct('order_id')
                 ->get();
         } else {
+            // Untuk merchant
             $invoices = Invoice::with(['order.customer', 'order.menu' => function ($query) {
                 $query->withTrashed(); // Ambil menu termasuk yang dihapus
             }])
-                ->when($search, function ($query, $search) {
-                    return $query->whereHas('order.customer', function ($q) use ($search) {
-                        $q->where('company_name', 'like', "%{$search}%");
-                    })->orWhere('order_id', 'like', "%{$search}%"); 
-                })
-                ->orderBy($sortBy, $sortOrder)
-                ->distinct('order_id')
-                ->get();
+            ->whereHas('order.menu', function ($query) use ($user) {
+                $query->where('merchant_id', $user->id); // Hanya ambil invoice untuk menu yang dimiliki merchant
+            })
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('order.customer', function ($q) use ($search) {
+                    $q->where('company_name', 'like', "%{$search}%");
+                })->orWhere('order_id', 'like', "%{$search}%"); 
+            })
+            ->orderBy($sortBy, $sortOrder)
+            ->distinct('order_id')
+            ->get();
         }
 
         return view('invoices.index', compact('invoices', 'search', 'sortBy', 'sortOrder'));
     }
+
 
     public function generate(Order $order)
     {
@@ -57,7 +62,6 @@ class InvoiceController extends Controller
         $menu = $order->menu()->withTrashed()->first();
 
         if ($invoice) {
-
             return view('invoices.show', compact('invoice', 'order', 'menu')); 
         }
 
@@ -66,16 +70,20 @@ class InvoiceController extends Controller
         }
 
         $total = $menu->price * $order->quantity;
+        $bayar = $order->bayar; // Ambil jumlah bayar dari order
 
+        // Tentukan status invoice
+        $status = $bayar < $total ? 'Pending' : 'Paid';
+
+        // Buat invoice baru
         $invoice = Invoice::create([
             'order_id' => $order->id,
             'total' => $total,
-            'status' => 'Paid', 
+            'status' => $status, // Set status sesuai hasil pengecekan
         ]);
 
         return view('invoices.show', compact('invoice', 'order', 'menu')); // Sertakan menu
     }
-
 
 
 

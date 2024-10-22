@@ -15,6 +15,8 @@ class Order extends Model
         'menu_id',
         'quantity',
         'delivery_date',
+        'bayar',
+        'change',
     ];
 
     public function customer()

@@ -52,6 +52,11 @@
                             <label for="quantity">Jumlah Pesanan</label>
                             <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
                         </div>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <label for="bayar">Jumlah Bayar</label>
+                            <input type="number" class="form-control" id="bayar" name="bayar" required min="1">
+                        </div>
     
                         <div data-mdb-input-init class="form-outline mb-4">
                             <label for="delivery_date">Tanggal Pengiriman</label>
